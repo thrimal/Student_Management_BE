@@ -8,9 +8,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/signup", async (req, res) => {
   try {
-    const { user_id, name, email, password, role } = req.body;
+    const { user_id, name, email, dob, address, phone, password, role } = req.body;
 
-    if (user_id === null || user_id === "") {
+    if (user_id === null || user_id === "" || isNaN(user_id)) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found userId", data: null });
@@ -24,6 +24,21 @@ router.post("/signup", async (req, res) => {
       res
         .status(400)
         .json({ hasError: true, message: "Not found email", data: null });
+      return;
+    }else if (dob === null || dob === "") {
+      res
+        .status(400)
+        .json({ hasError: true, message: "Not found date of birth", data: null });
+      return;
+    }else if (address === null || address === "") {
+      res
+        .status(400)
+        .json({ hasError: true, message: "Not found address", data: null });
+      return;
+    }else if (phone === null || phone === "") {
+      res
+        .status(400)
+        .json({ hasError: true, message: "Not found phone", data: null });
       return;
     }else if (password === null || password === "") {
       res
@@ -45,6 +60,9 @@ router.post("/signup", async (req, res) => {
     if (user) {
       user.name = name;
       user.email = email;
+      user.dob = dob,
+      user.address = address,
+      user.phone = phone,
       user.password = hashedPassword;
       await user.save();
       res.status(200).json({
@@ -57,6 +75,9 @@ router.post("/signup", async (req, res) => {
         user_id: userId,
         name: name,
         email: email,
+        dob: dob,
+        address: address,
+        phone:phone,
         password: hashedPassword,
         role: role
       });

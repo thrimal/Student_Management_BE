@@ -8,7 +8,6 @@ const cors = require("cors");
 var sequelize = require("./db/dbConnection");
 var usersRouter = require("./routes/users");
 var courseRouter = require("./routes/courses");
-var studentRouter = require("./routes/students");
 var enrollmentRouter = require("./routes/enrollments");
 
 var app = express();
@@ -26,7 +25,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/users", usersRouter);
-app.use("/students", studentRouter);
 app.use("/courses", courseRouter);
 app.use("/enrollments", enrollmentRouter);
 
