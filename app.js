@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 require('dotenv').config();
+const cors = require("cors");
 var sequelize = require("./db/dbConnection");
 var usersRouter = require("./routes/users");
 var courseRouter = require("./routes/courses");
@@ -11,6 +12,8 @@ var studentRouter = require("./routes/students");
 var enrollmentRouter = require("./routes/enrollments");
 
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

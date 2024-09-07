@@ -6,7 +6,7 @@ const authenticateToken = require('../middleware/jwt');
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const { user_id, name, email, password, role } = req.body;
 
