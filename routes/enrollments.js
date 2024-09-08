@@ -5,12 +5,12 @@ var router = express.Router();
 
 router.post("/", authenticateToken, async (req, res) => {
   try {
-    const { enrollment_id, course_id, student_id, enrollment_date } = req.body;
+    const { enrollment_id, course_id, user_id, enrollment_date } = req.body;
 
-    if (student_id === null || student_id === "") {
+    if (user_id === null || user_id === "") {
       res
         .status(400)
-        .json({ hasError: true, message: "Not found studentId", data: null });
+        .json({ hasError: true, message: "Not found userId", data: null });
       return;
     } else if (course_id === null || course_id === "") {
       res
@@ -30,13 +30,13 @@ router.post("/", authenticateToken, async (req, res) => {
     }
 
     let enrollmentId = parseInt(enrollment_id);
-    let studentId = parseInt(student_id);
+    let userId = parseInt(user_id);
     let courseId = parseInt(course_id);
 
     let enrollment = await Enrollment.findOne({ where: { enrollment_id: enrollmentId } });
 
     if (enrollment) {
-      enrollment.student_id = studentId;
+      enrollment.user_id = userId;
       enrollment.course_id = courseId;
       enrollment.enrollment_date = enrollment_date;
       await enrollment.save();
@@ -48,7 +48,7 @@ router.post("/", authenticateToken, async (req, res) => {
     } else {
       const enrollment = await Enrollment.create({
         enrollment_id: enrollmentId,
-        student_id: studentId,
+        user_id: userId,
         course_id: courseId,
         enrollment_date: enrollment_date,
       });
