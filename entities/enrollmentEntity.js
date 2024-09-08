@@ -11,7 +11,7 @@ const Enrollment = sequelize.define('Enrollment', {
         type: DataTypes.BIGINT,
         allowNull: false
     },
-    student_id: {
+    user_id: {
         type: DataTypes.BIGINT,
         allowNull: false
     },

@@ -15,37 +15,37 @@ router.post("/signup", async (req, res) => {
         .status(400)
         .json({ hasError: true, message: "Not found userId", data: null });
       return;
-    } else if (name === null || name === "") {
+    } else if (!name) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found name", data: null });
       return;
-    } else if (email === null || email === "") {
+    } else if (!email) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found email", data: null });
       return;
-    }else if (dob === null || dob === "") {
+    }else if (!dob) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found date of birth", data: null });
       return;
-    }else if (address === null || address === "") {
+    }else if (!address) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found address", data: null });
       return;
-    }else if (phone === null || phone === "") {
+    }else if (!phone) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found phone", data: null });
       return;
-    }else if (password === null || password === "") {
+    }else if (!password) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found password", data: null });
       return;
-    }  else if (role === null || role === "") {
+    }  else if (!role) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found role", data: null });
@@ -89,12 +89,24 @@ router.post("/signup", async (req, res) => {
     }
   } catch (error) {
     console.log("Error processing request:", error);
-    res.status(500).json({ hasError: true, message: "Server error", data: null });
+    res.status(500).json({ hasError: true, message: error, data: null });
   }
 }); 
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email) {
+    res
+      .status(400)
+      .json({ hasError: true, message: "Not found email", data: null });
+    return;
+  } else if(!password){
+    res
+      .status(400)
+      .json({ hasError: true, message: "Not found password", data: null });
+    return;
+  }
 
   try {
     const user = await User.findOne({ where: { email } });
@@ -148,6 +160,12 @@ router.get('/', authenticateToken, async (req, res) => {
   router.delete('/:user_id',authenticateToken, async (req, res) => {
     try { 
       const { user_id } = req.params;
+      if (user_id === null || user_id === "" || isNaN(user_id)) {
+        res
+          .status(400)
+          .json({ hasError: true, message: "Not found userId", data: null });
+        return;
+      }
       const userId = parseInt(user_id);
   
       const user = await User.findByPk(userId);
@@ -179,6 +197,12 @@ router.get('/', authenticateToken, async (req, res) => {
   router.get("/:user_id",authenticateToken, async (req, res) => {
     try {
       const { user_id } = req.params;
+      if (user_id === null || user_id === "" || isNaN(user_id)) {
+        res
+          .status(400)
+          .json({ hasError: true, message: "Not found userId", data: null });
+        return;
+      }
       const userId = parseInt(user_id);
   
       const user = await User.findByPk(userId);

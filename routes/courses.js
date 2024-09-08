@@ -7,27 +7,27 @@ router.post("/", authenticateToken, async (req, res) => {
   try {
     const { course_id, title, description, start_date, end_date } = req.body;
 
-    if (course_id === null || course_id === "") {
+    if (course_id === null || course_id === "" || isNaN(course_id)) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found courseId", data: null });
       return;
-    } else if (title === null || title === "") {
+    } else if (!title) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found title", data: null });
       return;
-    } else if (description === null || description === "") {
+    } else if (!description) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found description", data: null });
       return;
-    } else if (start_date === null || start_date === "") {
+    } else if (!start_date) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found startDate", data: null });
       return;
-    } else if (end_date === null || end_date === "") {
+    } else if (!end_date) {
       res
         .status(400)
         .json({ hasError: true, message: "Not found endDate", data: null });
@@ -90,6 +90,12 @@ router.get("/",authenticateToken, async (req, res) => {
 router.delete('/:course_id', authenticateToken, async (req, res) => {
   try { 
     const { course_id } = req.params;
+    if (course_id === null || course_id === "" || isNaN(course_id)) {
+      res
+        .status(400)
+        .json({ hasError: true, message: "Not found courseId", data: null });
+      return;
+    }
     const courseId = parseInt(course_id);
     const course = await Course.findByPk(courseId);
 
@@ -120,6 +126,12 @@ router.delete('/:course_id', authenticateToken, async (req, res) => {
 router.get("/:course_id", authenticateToken, async (req, res) => {
   try {
     const { course_id } = req.params;
+    if (course_id === null || course_id === "" || isNaN(course_id)) {
+      res
+        .status(400)
+        .json({ hasError: true, message: "Not found courseId", data: null });
+      return;
+    }
     const courseId = parseInt(course_id);
 
     const course = await Course.findByPk(courseId);
